@@ -17,6 +17,8 @@
 package io.patriot_framework.network_simulator.docker.model.routes;
 
 
+import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
+
 import java.util.Objects;
 
 /**

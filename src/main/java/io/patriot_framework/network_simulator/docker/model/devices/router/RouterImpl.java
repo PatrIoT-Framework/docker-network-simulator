@@ -216,7 +216,7 @@ public class RouterImpl implements Router {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        io.patriot_framework.network.simulator.api.model.devices.router.RouterImpl router = (io.patriot_framework.network.simulator.api.model.devices.router.RouterImpl) o;
+        RouterImpl router = (RouterImpl) o;
         return corner == router.corner &&
                 getName().equals(router.getName()) &&
                 Objects.equals(getNetworkInterfaces(), router.getNetworkInterfaces()) &&
