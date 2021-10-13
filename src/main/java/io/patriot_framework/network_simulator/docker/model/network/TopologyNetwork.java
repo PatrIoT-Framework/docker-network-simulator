@@ -18,6 +18,7 @@ package io.patriot_framework.network_simulator.docker.model.network;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.patriot_framework.network.simulator.api.model.network.Network;
+import io.patriot_framework.network_simulator.docker.CalculatedRouteList;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 
 import java.util.Objects;
