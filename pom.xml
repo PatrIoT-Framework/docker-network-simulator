@@ -137,6 +137,7 @@
       <org.args4j.version>2.33</org.args4j.version>
       <org.etcd4j.version>2.18.0</org.etcd4j.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <com.github.jgonian.version>1.32</com.github.jgonian.version>
    </properties>
 
    <build>
@@ -229,6 +230,11 @@
          <groupId>com.sun.xml.bind</groupId>
          <artifactId>jaxb-impl</artifactId>
          <version>2.3.3</version>
+      </dependency>
+      <dependency>
+         <groupId>com.github.jgonian</groupId>
+         <artifactId>commons-ip-math</artifactId>
+         <version>${com.github.jgonian.version}</version>
       </dependency>
 
       <dependency>
