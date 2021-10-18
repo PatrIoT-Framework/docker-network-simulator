@@ -25,6 +25,7 @@ import io.patriot_framework.network_simulator.docker.model.network.ContainerNetw
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 import io.patriot_framework.network_simulator.docker.model.routes.NextHop;
 import io.patriot_framework.network_simulator.docker.model.routes.Route;
+import io.patriot_framework.network_simulator.docker.topology.ContainerTopologyManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RouteTreatmentTest {
 
-    private Manager manager = new Manager("patriot");
+    private final ContainerTopologyManager manager = new ContainerTopologyManager("patriot");
 
     @Test
     public void testRouteTreatmentTest() {

@@ -17,8 +17,9 @@
 package io.patriot_framework.network_simulator.docker.api.iptables;
 
 import io.patriot_framework.network.simulator.api.api.RestController;
-import io.patriot_framework.network.simulator.api.api.iptables.chain.Chain;
-import io.patriot_framework.network.simulator.api.api.iptables.rules.FilterRule;
+import io.patriot_framework.network_simulator.docker.api.iptables.chain.Chain;
+import io.patriot_framework.network_simulator.docker.api.iptables.rules.FilterRule;
+
 
 /**
  * The type Ip tables controller.

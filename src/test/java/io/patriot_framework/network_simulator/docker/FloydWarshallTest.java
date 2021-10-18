@@ -24,6 +24,7 @@ import io.patriot_framework.network_simulator.docker.model.devices.router.Router
 import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 import io.patriot_framework.network_simulator.docker.model.routes.NextHop;
+import io.patriot_framework.network_simulator.docker.topology.ContainerTopologyManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -129,8 +130,7 @@ public class FloydWarshallTest {
         Topology topology = new Topology(routers, containerNetworks);
 
         initNetworks(containerNetworks, routers);
-        // TODO: remove docker-network-simulator specific methods from Manager
-        Manager networkManager = new Manager("patriotRouter");
+        ContainerTopologyManager networkManager = new ContainerTopologyManager("patriotRouter");
         ArrayList<ContainerNetwork> resArr = prepareResultTopology(containerNetworks);
         networkManager.calcRoutes(topology);
 
