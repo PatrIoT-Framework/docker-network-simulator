@@ -20,7 +20,7 @@ import io.patriot_framework.network_simulator.docker.builder.CalcRouteBuilder;
 import io.patriot_framework.network_simulator.docker.builder.NetworkBuilder;
 import io.patriot_framework.network_simulator.docker.builder.RouterBuilder;
 import io.patriot_framework.network_simulator.docker.builder.TopologyBuilder;
-import io.patriot_framework.network_simulator.docker.model.Topology;
+import io.patriot_framework.network_simulator.docker.model.ContainerTopology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.devices.router.RouterImpl;
 import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
@@ -125,11 +125,11 @@ public class BuilderTests {
     @Test
     public void topologyBuilderTest() {
         RouterImpl rtImpl = new RouterImpl("TestRt", "Docker", true);
-        Topology topology = new Topology(2);
+        ContainerTopology topology = new ContainerTopology(2);
         topology.setRouters(Arrays.asList(rtImpl));
         topology.setNetworks(prepareNetwork(rtImpl));
 
-        Topology builderTopology = new TopologyBuilder(2)
+        ContainerTopology builderContainerTopology = new TopologyBuilder(2)
                 .withCreator("Docker")
                 .withRouters()
                 .withCorner(true)
@@ -154,7 +154,7 @@ public class BuilderTests {
                 .addRoute()
                 .buildRoutes()
                 .build();
-        Assertions.assertEquals(topology, builderTopology);
+        Assertions.assertEquals(topology, builderContainerTopology);
     }
 
     private ArrayList<ContainerNetwork> prepareNetwork(Router router) {

@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * Wrapper representing full network topology.
  */
-public class Topology {
+public class ContainerTopology {
     /**
      * Routers located in topology.
      */
@@ -63,7 +63,7 @@ public class Topology {
      * @param routers    the routers
      * @param networks the network top
      */
-    public Topology(List<Router> routers, ArrayList<ContainerNetwork> networks) {
+    public ContainerTopology(List<Router> routers, ArrayList<ContainerNetwork> networks) {
         this.routers = routers;
         this.networks = networks;
     }
@@ -73,7 +73,7 @@ public class Topology {
      *
      * @param networks the network top
      */
-    public Topology(ArrayList<ContainerNetwork> networks) {
+    public ContainerTopology(ArrayList<ContainerNetwork> networks) {
         this.networks = networks;
     }
 
@@ -82,7 +82,7 @@ public class Topology {
      *
      * @param networkCount the network count
      */
-    public Topology(Integer networkCount) {
+    public ContainerTopology(Integer networkCount) {
         this.networks = new ArrayList<>(networkCount);
     }
 
@@ -140,7 +140,7 @@ public class Topology {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Topology topology = (Topology) o;
+        ContainerTopology topology = (ContainerTopology) o;
         return getRouters().equals(topology.getRouters()) &&
                 getNetworks().equals(topology.getNetworks());
     }

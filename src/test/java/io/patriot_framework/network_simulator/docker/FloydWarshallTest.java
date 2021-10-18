@@ -17,8 +17,7 @@
 package io.patriot_framework.network_simulator.docker;
 
 
-import io.patriot_framework.network_simulator.docker.manager.Manager;
-import io.patriot_framework.network_simulator.docker.model.Topology;
+import io.patriot_framework.network_simulator.docker.model.ContainerTopology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.devices.router.RouterImpl;
 import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
@@ -127,7 +126,7 @@ public class FloydWarshallTest {
         internet.setInternet(true);
 
         containerNetworks.addAll(Arrays.asList(n1, n2, n3, n4, internet));
-        Topology topology = new Topology(routers, containerNetworks);
+        ContainerTopology topology = new ContainerTopology(routers, containerNetworks);
 
         initNetworks(containerNetworks, routers);
         ContainerTopologyManager networkManager = new ContainerTopologyManager("patriotRouter");

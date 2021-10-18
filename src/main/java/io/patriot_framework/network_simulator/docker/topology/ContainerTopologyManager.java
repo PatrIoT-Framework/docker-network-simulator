@@ -22,7 +22,7 @@ import io.patriot_framework.network.simulator.api.control.Controller;
 import io.patriot_framework.network.simulator.api.model.EnvironmentPart;
 import io.patriot_framework.network.simulator.api.model.devices.Device;
 import io.patriot_framework.network_simulator.docker.api.iproute.RouteRestController;
-import io.patriot_framework.network_simulator.docker.model.Topology;
+import io.patriot_framework.network_simulator.docker.model.ContainerTopology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.NetworkInterface;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
@@ -131,7 +131,7 @@ public class ContainerTopologyManager {
      *
      * @param topology
      */
-    public void deployTopology(Topology topology) {
+    public void deployTopology(ContainerTopology topology) {
         createNetworks(topology.getNetworks());
         createRouters(topology);
         connectNetworks(topology);
@@ -156,7 +156,7 @@ public class ContainerTopologyManager {
      *
      * @param topology the representation of topology where shortest paths are to be found
      */
-    public void calcRoutes(Topology topology) {
+    public void calcRoutes(ContainerTopology topology) {
         ArrayList<ContainerNetwork> topologyNetworks = topology.getNetworks();
         LOGGER.info("Calculating network routes.");
         int size = topologyNetworks.size();
@@ -195,7 +195,7 @@ public class ContainerTopologyManager {
      *
      * @param topology topology of network
      */
-    public void processRoutes(Topology topology) {
+    public void processRoutes(ContainerTopology topology) {
         LOGGER.info("Processing routes to ipRoute2 format.");
         ArrayList<ContainerNetwork> calculatedTop = topology.getNetworks();
         int size = calculatedTop.size();
@@ -320,7 +320,7 @@ public class ContainerTopologyManager {
      *
      * @param topology topology of network
      */
-    public void setRoutes(Topology topology) {
+    public void setRoutes(ContainerTopology topology) {
         RouteRestController routeController = new RouteRestController();
         for (Map.Entry<String, ArrayList<Route>> entry : processedRoutes.entrySet()) {
             Router r = topology.findRouterByName(entry.getKey());
@@ -345,7 +345,7 @@ public class ContainerTopologyManager {
      *
      * @param topology topology of network
      */
-    private void updateRouters(Topology topology) {
+    private void updateRouters(ContainerTopology topology) {
         RouteRestController restController = new RouteRestController();
         LOGGER.info("Requesting information about routers interfaces.");
         for (Router r : topology.getRouters()) {
@@ -358,7 +358,7 @@ public class ContainerTopologyManager {
      *
      * @param topology
      */
-    private void connectNetworks(Topology topology) {
+    private void connectNetworks(ContainerTopology topology) {
         LOGGER.info("Initializing corner network address");
         initializeCornerNetworkIP(topology);
         LOGGER.info("Connecting networks.");
@@ -381,7 +381,7 @@ public class ContainerTopologyManager {
      *
      * @param topology topology of network
      */
-    private void initializeCornerNetworkIP(Topology topology) {
+    private void initializeCornerNetworkIP(ContainerTopology topology) {
         for (ContainerNetwork n : topology.getNetworks()) {
             if (n.getInternet()) {
                 Device device = findDeviceWithCreator(topology, n.getCreator());
@@ -400,7 +400,7 @@ public class ContainerTopologyManager {
      * @param creator  creating object
      * @return
      */
-    private Device findDeviceWithCreator(Topology topology, Object creator) {
+    private Device findDeviceWithCreator(ContainerTopology topology, Object creator) {
         for (Device device : topology.getRouters()) {
             if (device.getCreator().equals(creator)) {
                 return device;
@@ -416,7 +416,7 @@ public class ContainerTopologyManager {
      * @param topology
      * @return Hash map with router`s name as key and networks with which router has to be connected
      */
-    private HashMap<String, List<ContainerNetwork>> filterConnected(Topology topology) {
+    private HashMap<String, List<ContainerNetwork>> filterConnected(ContainerTopology topology) {
         LOGGER.info("Filtering direct connections.");
         HashMap<String, List<ContainerNetwork>> connections = new HashMap<>();
 
@@ -479,7 +479,7 @@ public class ContainerTopologyManager {
      *
      * @param topology
      */
-    private void createRouters(Topology topology) {
+    private void createRouters(ContainerTopology topology) {
         for (Router router : topology.getRouters()) {
             LOGGER.debug("Creating router: " + router.getName());
             if (monitoringAddr != null && monitoringPort != 0) {
@@ -517,7 +517,7 @@ public class ContainerTopologyManager {
      *
      * @param topology
      */
-    public void cleanUp(Topology topology) {
+    public void cleanUp(ContainerTopology topology) {
         Controller controller;
         for (Router r : topology.getRouters()) {
             controller = findController(r);
@@ -554,7 +554,7 @@ public class ContainerTopologyManager {
      *
      * @param topology topology of network
      */
-    public void setMasquerade(Topology topology) {
+    public void setMasquerade(ContainerTopology topology) {
         for (Router r : topology.getRouters()) {
             if (r.isCorner()) {
                 for (ContainerNetwork n : topology.getNetworks()) {
@@ -576,7 +576,7 @@ public class ContainerTopologyManager {
      * @param tag                tag of device
      * @param envVars            environment variables passed to the container
      */
-    public void deployDeviceToNetwork(Device device, ContainerNetwork network, Topology calculatedTopology, String tag, List<String> envVars) {
+    public void deployDeviceToNetwork(Device device, ContainerNetwork network, ContainerTopology calculatedTopology, String tag, List<String> envVars) {
         ArrayList<ContainerNetwork> networks = calculatedTopology.getNetworks();
         calculatedTopology.addDevice(device);
         deployToNetwork(device, tag, network, envVars);

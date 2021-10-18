@@ -16,8 +16,7 @@
 
 package io.patriot_framework.network_simulator.docker;
 
-import io.patriot_framework.network.simulator.api.manager.Manager;
-import io.patriot_framework.network_simulator.docker.model.Topology;
+import io.patriot_framework.network_simulator.docker.model.ContainerTopology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.NetworkInterface;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.devices.router.RouterImpl;
@@ -41,7 +40,7 @@ public class RouteTreatmentTest {
     @Test
     public void testRouteTreatmentTest() {
         ArrayList<ContainerNetwork> topologyNetworks = new ArrayList<>();
-        Topology topology = new Topology(topologyNetworks);
+        ContainerTopology topology = new ContainerTopology(topologyNetworks);
         Router r = new RouterImpl("TestRouter", "Docker");
         Route route = createSimpleTopology(topologyNetworks, false, r);
         manager.processRoutes(topology);

@@ -16,7 +16,7 @@
 
 package io.patriot_framework.network_simulator.docker.builder;
 
-import io.patriot_framework.network_simulator.docker.model.Topology;
+import io.patriot_framework.network_simulator.docker.model.ContainerTopology;
 
 /**
  * The type Topology builder.
@@ -25,7 +25,7 @@ public class TopologyBuilder {
     /**
      * The Topology.
      */
-    private Topology topology;
+    private ContainerTopology topology;
     private Object currentCreator;
 
     public Object getCurrentCreator() {
@@ -52,10 +52,10 @@ public class TopologyBuilder {
      * @param networkCount the network count
      */
     public TopologyBuilder(int networkCount) {
-        topology = new Topology(networkCount);
+        topology = new ContainerTopology(networkCount);
     }
 
-    public TopologyBuilder(Topology topology) {
+    public TopologyBuilder(ContainerTopology topology) {
         this.topology = topology;
     }
 
@@ -64,7 +64,7 @@ public class TopologyBuilder {
      *
      * @return the topology
      */
-    public Topology build() {
+    public ContainerTopology build() {
         return topology;
     }
 
@@ -86,7 +86,7 @@ public class TopologyBuilder {
         return new RouterBuilder(this);
     }
 
-    public Topology getTopology() {
+    public ContainerTopology getTopology() {
         return topology;
     }
 }
