@@ -19,9 +19,12 @@ package io.patriot_framework.network_simulator.docker.topology;
 import com.github.jgonian.ipmath.Ipv4;
 import com.github.jgonian.ipmath.Ipv4Range;
 import io.patriot_framework.network.simulator.api.control.Controller;
+import io.patriot_framework.network.simulator.api.manager.TopologyManager;
 import io.patriot_framework.network.simulator.api.model.EnvironmentPart;
+import io.patriot_framework.network.simulator.api.model.Topology;
 import io.patriot_framework.network.simulator.api.model.devices.Device;
 import io.patriot_framework.network_simulator.docker.api.iproute.RouteRestController;
+import io.patriot_framework.network_simulator.docker.exceptions.UnsupportedTopologyException;
 import io.patriot_framework.network_simulator.docker.model.ContainerTopology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.NetworkInterface;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
@@ -40,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ContainerTopologyManager {
+public class ContainerTopologyManager implements TopologyManager {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private List<Controller> controllers;
@@ -131,15 +134,18 @@ public class ContainerTopologyManager {
      *
      * @param topology
      */
-    public void deployTopology(ContainerTopology topology) {
-        createNetworks(topology.getNetworks());
-        createRouters(topology);
-        connectNetworks(topology);
-        updateRouters(topology);
-        calcRoutes(topology);
-        processRoutes(topology);
-        setRoutes(topology);
-        setMasquerade(topology);
+    @Override
+    public void deployTopology(Topology topology) {
+        ContainerTopology containerTopology = recastTopology(topology);
+
+        createNetworks(containerTopology.getNetworks());
+        createRouters(containerTopology);
+        connectNetworks(containerTopology);
+        updateRouters(containerTopology);
+        calcRoutes(containerTopology);
+        processRoutes(containerTopology);
+        setRoutes(containerTopology);
+        setMasquerade(containerTopology);
     }
 
     /**
@@ -517,19 +523,21 @@ public class ContainerTopologyManager {
      *
      * @param topology
      */
-    public void cleanUp(ContainerTopology topology) {
+    @Override
+    public void cleanUp(Topology topology) {
+        ContainerTopology containerTopology = recastTopology(topology);
         Controller controller;
-        for (Router r : topology.getRouters()) {
+        for (Router r : containerTopology.getRouters()) {
             controller = findController(r);
             LOGGER.info("Destroying router " + r.getName());
             controller.destroyDevice(r);
         }
-        for (Device device : topology.getDevices()) {
+        for (Device device : containerTopology.getDevices()) {
             controller = findController(device);
             LOGGER.info("Destroying device " + device.getName());
             controller.destroyDevice(device);
         }
-        for (ContainerNetwork n : topology.getNetworks()) {
+        for (ContainerNetwork n : containerTopology.getNetworks()) {
             if (!n.getInternet()) {
                 controller = findController(n);
                 LOGGER.info("Destroying network " + n.getName());
@@ -612,5 +620,12 @@ public class ContainerTopologyManager {
         deviceController.deployDevice(device, tag, monitoringAddr, monitoringPort, envVars);
         deviceController.connectDeviceToNetwork(device, network);
         device.getConnectedNetworks().add(network);
+    }
+
+    private ContainerTopology recastTopology(Topology topology) {
+        if (!(topology instanceof ContainerTopology)) {
+            throw new UnsupportedTopologyException("Unsupported topology.");
+        }
+        return (ContainerTopology) topology;
     }
 }
