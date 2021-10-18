@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.patriot_framework.network_simulator.docker.model.devices.router.NetworkInterface;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 
 /**
  * Used for represent route record in routing tables.
@@ -28,7 +28,7 @@ import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwo
 public class Route {
 
     @JsonIgnore
-    private TopologyNetwork source;
+    private ContainerNetwork source;
 
     @JsonIgnore
     private Router targetRouter;
@@ -40,7 +40,7 @@ public class Route {
     private Integer hopLimit = 16;
 
     @JsonProperty("Destination")
-    private TopologyNetwork dest;
+    private ContainerNetwork dest;
 
     @JsonProperty("InterfaceIP")
     private NetworkInterface rNetworkInterface;
@@ -53,7 +53,7 @@ public class Route {
      *
      * @return the dest
      */
-    public TopologyNetwork getDest() {
+    public ContainerNetwork getDest() {
         return dest;
     }
 
@@ -62,7 +62,7 @@ public class Route {
      *
      * @param dest the dest
      */
-    public void setDest(TopologyNetwork dest) {
+    public void setDest(ContainerNetwork dest) {
         this.dest = dest;
     }
 
@@ -71,7 +71,7 @@ public class Route {
      *
      * @return the source
      */
-    public TopologyNetwork getSource() {
+    public ContainerNetwork getSource() {
         return source;
     }
 
@@ -80,7 +80,7 @@ public class Route {
      *
      * @param source the source
      */
-    public void setSource(TopologyNetwork source) {
+    public void setSource(ContainerNetwork source) {
         this.source = source;
     }
 

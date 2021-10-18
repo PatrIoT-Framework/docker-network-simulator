@@ -21,7 +21,7 @@ import io.patriot_framework.network_simulator.docker.manager.Manager;
 import io.patriot_framework.network_simulator.docker.model.Topology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.devices.router.RouterImpl;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 import io.patriot_framework.network_simulator.docker.model.routes.NextHop;
 import org.junit.jupiter.api.Assertions;
@@ -32,10 +32,10 @@ import java.util.Arrays;
 
 public class FloydWarshallTest {
 
-    private ArrayList<TopologyNetwork> copyTopology(ArrayList<TopologyNetwork> topology) {
-        ArrayList<TopologyNetwork> resultTop = new ArrayList<>();
+    private ArrayList<ContainerNetwork> copyTopology(ArrayList<ContainerNetwork> topology) {
+        ArrayList<ContainerNetwork> resultTop = new ArrayList<>();
         for (int i = 0; i < topology.size(); i++) {
-            TopologyNetwork n = new TopologyNetwork();
+            ContainerNetwork n = new ContainerNetwork();
             n.setInternet(topology.get(i).getInternet());
             n.setName(topology.get(i).getName());
             n.setMask(topology.get(i).getMask());
@@ -45,8 +45,8 @@ public class FloydWarshallTest {
         return resultTop;
     }
 
-    private ArrayList<TopologyNetwork> prepareResultTopology(ArrayList<TopologyNetwork> topology) {
-        ArrayList<TopologyNetwork> resultTop = copyTopology(topology);
+    private ArrayList<ContainerNetwork> prepareResultTopology(ArrayList<ContainerNetwork> topology) {
+        ArrayList<ContainerNetwork> resultTop = copyTopology(topology);
         CalculatedRouteList n1Routes = new CalculatedRouteList();
         n1Routes.add(new CalcRoute(new NextHop(null, 0), null));
         n1Routes.add(new CalcRoute(new NextHop(null, 1), 1));
@@ -93,7 +93,7 @@ public class FloydWarshallTest {
     @Test
     public void FloydWarshallTest() {
 
-        ArrayList<TopologyNetwork> topologyNetworks = new ArrayList<>(4);
+        ArrayList<ContainerNetwork> containerNetworks = new ArrayList<>(4);
         ArrayList<Router> routers = new ArrayList<>();
 
 
@@ -102,41 +102,41 @@ public class FloydWarshallTest {
         routers.add(new RouterImpl("R3"));
         routers.add(new RouterImpl("R5"));
 
-        TopologyNetwork n1 = new TopologyNetwork();
+        ContainerNetwork n1 = new ContainerNetwork();
         n1.setIPAddress("192.168.0.0");
         n1.setName("TN1");
         n1.setMask(28);
 
-        TopologyNetwork n2 = new TopologyNetwork();
+        ContainerNetwork n2 = new ContainerNetwork();
         n2.setMask(28);
         n2.setIPAddress("192.168.16.0");
         n2.setName("TN2");
 
-        TopologyNetwork n3 = new TopologyNetwork();
+        ContainerNetwork n3 = new ContainerNetwork();
         n3.setName("TN3");
         n3.setMask(28);
         n3.setIPAddress("192.168.32.0");
 
-        TopologyNetwork n4 = new TopologyNetwork();
+        ContainerNetwork n4 = new ContainerNetwork();
         n4.setMask(28);
         n4.setIPAddress("192.168.48.0");
         n4.setName("TN4");
 
-        TopologyNetwork internet = new TopologyNetwork();
+        ContainerNetwork internet = new ContainerNetwork();
         internet.setInternet(true);
 
-        topologyNetworks.addAll(Arrays.asList(n1, n2, n3, n4, internet));
-        Topology topology = new Topology(routers, topologyNetworks);
+        containerNetworks.addAll(Arrays.asList(n1, n2, n3, n4, internet));
+        Topology topology = new Topology(routers, containerNetworks);
 
-        initNetworks(topologyNetworks, routers);
+        initNetworks(containerNetworks, routers);
         // TODO: remove docker-network-simulator specific methods from Manager
         Manager networkManager = new Manager("patriotRouter");
-        ArrayList<TopologyNetwork> resArr = prepareResultTopology(topologyNetworks);
+        ArrayList<ContainerNetwork> resArr = prepareResultTopology(containerNetworks);
         networkManager.calcRoutes(topology);
 
         for (int i = 0; i < 5; i++) {
-            TopologyNetwork targetTopologyNetwork = topologyNetworks.get(i);
-            TopologyNetwork resultTopologyNetwork = resArr.get(i);
+            ContainerNetwork targetTopologyNetwork = containerNetworks.get(i);
+            ContainerNetwork resultTopologyNetwork = resArr.get(i);
             for (int y = 0; y < 5; y++) {
                 Assertions.assertEquals(targetTopologyNetwork.getCalcRoutes().get(y).getCost(),
                         resultTopologyNetwork.getCalcRoutes().get(y).getCost());
@@ -149,14 +149,14 @@ public class FloydWarshallTest {
     }
 
 
-    private void initNetworks(ArrayList<TopologyNetwork> topology, ArrayList<Router> routers) {
+    private void initNetworks(ArrayList<ContainerNetwork> topology, ArrayList<Router> routers) {
 
         Integer routNeedCalc = topology.size() + 1;
-        TopologyNetwork tN1 = topology.get(0);
-        TopologyNetwork tN2 = topology.get(1);
-        TopologyNetwork tN3 = topology.get(2);
-        TopologyNetwork tN4 = topology.get(3);
-        TopologyNetwork internet = topology.get(4);
+        ContainerNetwork tN1 = topology.get(0);
+        ContainerNetwork tN2 = topology.get(1);
+        ContainerNetwork tN3 = topology.get(2);
+        ContainerNetwork tN4 = topology.get(3);
+        ContainerNetwork internet = topology.get(4);
 
         tN1.getCalcRoutes().add(new CalcRoute(new NextHop(null, 0), null));
         tN1.getCalcRoutes().add(new CalcRoute(new NextHop(routers.get(0), 1), 1));

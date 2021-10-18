@@ -18,7 +18,7 @@ package io.patriot_framework.network_simulator.docker.model;
 
 import io.patriot_framework.network.simulator.api.model.devices.Device;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public class Topology {
     /**
      * Networks in topology.
      */
-    private ArrayList<TopologyNetwork> networks;
+    private ArrayList<ContainerNetwork> networks;
 
     private Set<Device> devices = new HashSet<>();
 
@@ -63,7 +63,7 @@ public class Topology {
      * @param routers    the routers
      * @param networks the network top
      */
-    public Topology(List<Router> routers, ArrayList<TopologyNetwork> networks) {
+    public Topology(List<Router> routers, ArrayList<ContainerNetwork> networks) {
         this.routers = routers;
         this.networks = networks;
     }
@@ -73,7 +73,7 @@ public class Topology {
      *
      * @param networks the network top
      */
-    public Topology(ArrayList<TopologyNetwork> networks) {
+    public Topology(ArrayList<ContainerNetwork> networks) {
         this.networks = networks;
     }
 
@@ -109,7 +109,7 @@ public class Topology {
      *
      * @return the network top
      */
-    public ArrayList<TopologyNetwork> getNetworks() {
+    public ArrayList<ContainerNetwork> getNetworks() {
         return networks;
     }
 
@@ -118,7 +118,7 @@ public class Topology {
      *
      * @param networks the network top
      */
-    public void setNetworks(ArrayList<TopologyNetwork> networks) {
+    public void setNetworks(ArrayList<ContainerNetwork> networks) {
         this.networks = networks;
     }
 

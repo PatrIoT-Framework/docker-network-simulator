@@ -17,7 +17,7 @@
 package io.patriot_framework.network_simulator.docker.builder;
 
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 import io.patriot_framework.network_simulator.docker.model.routes.NextHop;
 
@@ -159,7 +159,7 @@ public class CalcRouteBuilder {
      * @return index of target network in topology list of networks.
      */
     private Integer findNetworkByName(String name) {
-        List<TopologyNetwork> topologyNetworks = topologyBuilder.getTopology().getNetworks();
+        List<ContainerNetwork> topologyNetworks = topologyBuilder.getTopology().getNetworks();
         for (int i = 0; i < topologyNetworks.size(); i++) {
             if (topologyNetworks.get(i).getName().equals(name)) {
                 return i;

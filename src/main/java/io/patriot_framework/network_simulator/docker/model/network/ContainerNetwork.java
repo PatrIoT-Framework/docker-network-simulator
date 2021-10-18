@@ -27,7 +27,7 @@ import java.util.Objects;
  * TopologyNetwork class representing docker network with additional informations
  * like calculated routes to other networks.
  */
-public class TopologyNetwork extends Network {
+public class ContainerNetwork extends Network {
 
     @JsonIgnore
     private CalculatedRouteList<CalcRoute> calcRoutes = new CalculatedRouteList<>();
@@ -41,7 +41,7 @@ public class TopologyNetwork extends Network {
     /**
      * Instantiates a new TopologyNetwork.
      */
-    public TopologyNetwork() {
+    public ContainerNetwork() {
     }
 
     /**
@@ -50,7 +50,7 @@ public class TopologyNetwork extends Network {
      * @param calcRoutes the calc routes
      * @param name       the name
      */
-    public TopologyNetwork(CalculatedRouteList<CalcRoute> calcRoutes, String name) {
+    public ContainerNetwork(CalculatedRouteList<CalcRoute> calcRoutes, String name) {
         this.calcRoutes = calcRoutes;
         super.setName(name);
     }
@@ -60,7 +60,7 @@ public class TopologyNetwork extends Network {
      *
      * @param calcRoutes the calc routes
      */
-    public TopologyNetwork(CalculatedRouteList<CalcRoute> calcRoutes) {
+    public ContainerNetwork(CalculatedRouteList<CalcRoute> calcRoutes) {
         this.calcRoutes = calcRoutes;
     }
 
@@ -112,13 +112,13 @@ public class TopologyNetwork extends Network {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TopologyNetwork that = (TopologyNetwork) o;
+        ContainerNetwork that = (ContainerNetwork) o;
         return calcRoutes.equals(that.calcRoutes) &&
                 internet.equals(that.internet) &&
                 creator.equals(that.creator) &&
-                this.getName().equals(((TopologyNetwork) o).getName()) &&
-                this.getIPAddress().equals(((TopologyNetwork) o).getIPAddress()) &&
-                this.getMask().equals(((TopologyNetwork) o).getMask());
+                this.getName().equals(((ContainerNetwork) o).getName()) &&
+                this.getIPAddress().equals(((ContainerNetwork) o).getIPAddress()) &&
+                this.getMask().equals(((ContainerNetwork) o).getMask());
     }
 
     @Override

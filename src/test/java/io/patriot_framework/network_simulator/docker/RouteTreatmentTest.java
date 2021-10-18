@@ -21,7 +21,7 @@ import io.patriot_framework.network_simulator.docker.model.Topology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.NetworkInterface;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.devices.router.RouterImpl;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 import io.patriot_framework.network_simulator.docker.model.routes.NextHop;
 import io.patriot_framework.network_simulator.docker.model.routes.Route;
@@ -39,7 +39,7 @@ public class RouteTreatmentTest {
 
     @Test
     public void testRouteTreatmentTest() {
-        ArrayList<TopologyNetwork> topologyNetworks = new ArrayList<>();
+        ArrayList<ContainerNetwork> topologyNetworks = new ArrayList<>();
         Topology topology = new Topology(topologyNetworks);
         Router r = new RouterImpl("TestRouter", "Docker");
         Route route = createSimpleTopology(topologyNetworks, false, r);
@@ -48,7 +48,7 @@ public class RouteTreatmentTest {
 
     }
 
-    private Route parseRoute(TopologyNetwork source, TopologyNetwork dest, Router targetRouter, NetworkInterface targetInterface) {
+    private Route parseRoute(ContainerNetwork source, ContainerNetwork dest, Router targetRouter, NetworkInterface targetInterface) {
         Route route = new Route();
         route.setrNetworkInterface(targetInterface);
         route.setSource(source);
@@ -57,18 +57,18 @@ public class RouteTreatmentTest {
         return route;
     }
 
-    private Route createSimpleTopology(ArrayList<TopologyNetwork> topology, Boolean duplicate, Router r) {
+    private Route createSimpleTopology(ArrayList<ContainerNetwork> topology, Boolean duplicate, Router r) {
         List<NetworkInterface> routerInterfaces = new ArrayList<>();
         routerInterfaces.add(new NetworkInterface("eth0", "192.168.0.2", 24));
         r.setNetworkInterfaces(routerInterfaces);
 
-        TopologyNetwork n1 = new TopologyNetwork();
+        ContainerNetwork n1 = new ContainerNetwork();
         n1.setName("TestNetwork1");
         n1.setIPAddress("172.16.0.0");
         n1.setCreator("Docker");
         n1.setMask(16);
 
-        TopologyNetwork n2 = new TopologyNetwork();
+        ContainerNetwork n2 = new ContainerNetwork();
         n2.setName("TestNetwork2");
         n2.setIPAddress("192.168.0.0");
         n2.setCreator("Docker");
@@ -89,22 +89,22 @@ public class RouteTreatmentTest {
         return calculatedRouteList;
     }
 
-    private ArrayList<TopologyNetwork> prepareComplicatedTopology(ArrayList<Router> routers) {
-        ArrayList<TopologyNetwork> topology = new ArrayList<>();
+    private ArrayList<ContainerNetwork> prepareComplicatedTopology(ArrayList<Router> routers) {
+        ArrayList<ContainerNetwork> topology = new ArrayList<>();
 
-        TopologyNetwork n1 = new TopologyNetwork();
+        ContainerNetwork n1 = new ContainerNetwork();
         n1.setName("TestNetwork1");
         n1.setIPAddress("192.168.1.0");
         n1.setCreator("Docker");
         n1.setMask(28);
 
-        TopologyNetwork n2 = new TopologyNetwork();
+        ContainerNetwork n2 = new ContainerNetwork();
         n2.setName("TestNetwork2");
         n2.setIPAddress("192.168.1.16");
         n2.setCreator("Docker");
         n2.setMask(28);
 
-        TopologyNetwork n3 = new TopologyNetwork();
+        ContainerNetwork n3 = new ContainerNetwork();
         n3.setName("TestNetwork3");
         n3.setIPAddress("192.168.1.32");
         n3.setCreator("Docker");
@@ -115,11 +115,11 @@ public class RouteTreatmentTest {
         return topology;
     }
 
-    private void prepareOnStartTopology(ArrayList<TopologyNetwork> topology, ArrayList<Router> routers) {
+    private void prepareOnStartTopology(ArrayList<ContainerNetwork> topology, ArrayList<Router> routers) {
         Integer routNeedCalc = topology.size() + 1;
-        TopologyNetwork n1 = topology.get(0);
-        TopologyNetwork n2 = topology.get(1);
-        TopologyNetwork n3 = topology.get(2);
+        ContainerNetwork n1 = topology.get(0);
+        ContainerNetwork n2 = topology.get(1);
+        ContainerNetwork n3 = topology.get(2);
 
         n1.getCalcRoutes().add(new CalcRoute(new NextHop(null, 0), null));
         n1.getCalcRoutes().add(new CalcRoute(new NextHop(routers.get(0), 1), 1));

@@ -23,7 +23,7 @@ import io.patriot_framework.network_simulator.docker.builder.TopologyBuilder;
 import io.patriot_framework.network_simulator.docker.model.Topology;
 import io.patriot_framework.network_simulator.docker.model.devices.router.Router;
 import io.patriot_framework.network_simulator.docker.model.devices.router.RouterImpl;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 import io.patriot_framework.network_simulator.docker.model.routes.NextHop;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +57,7 @@ public class BuilderTests {
         CalcRoute calcRoute = new CalcRoute(nextHop, 10);
         calcRoutes.add(calcRoute);
 
-        TopologyNetwork topologyNetwork = new TopologyNetwork();
+        ContainerNetwork topologyNetwork = new ContainerNetwork();
         topologyNetwork.setCreator("Docker");
         topologyNetwork.setMask(24);
         topologyNetwork.setIPAddress("192.168.1.0");
@@ -65,7 +65,7 @@ public class BuilderTests {
         topologyNetwork.setName("TestNet");
         topologyNetwork.setCalcRoutes(calcRoutes);
 
-        TopologyNetwork builderNetwork = new NetworkBuilder("TestNet")
+        ContainerNetwork builderNetwork = new NetworkBuilder("TestNet")
                 .withCalcRoutes(calcRoutes)
                 .withCreator("Docker")
                 .withInternet(true)
@@ -82,7 +82,7 @@ public class BuilderTests {
         CalcRoute calcRoute = new CalcRoute(nextHop, 10);
         calcRoutes.add(calcRoute);
 
-        TopologyNetwork topologyNetwork = new TopologyNetwork();
+        ContainerNetwork topologyNetwork = new ContainerNetwork();
         topologyNetwork.setCreator('x');
         topologyNetwork.setMask(24);
         topologyNetwork.setIPAddress("192.168.1.0");
@@ -90,7 +90,7 @@ public class BuilderTests {
         topologyNetwork.setName("TestNet");
         topologyNetwork.setCalcRoutes(calcRoutes);
 
-        TopologyNetwork builderNetwork = new NetworkBuilder("TestNet")
+        ContainerNetwork builderNetwork = new NetworkBuilder("TestNet")
                 .withCalcRoutes(calcRoutes)
                 .withCreator('x')
                 .withInternet(true)
@@ -157,8 +157,8 @@ public class BuilderTests {
         Assertions.assertEquals(topology, builderTopology);
     }
 
-    private ArrayList<TopologyNetwork> prepareNetwork(Router router) {
-        ArrayList<TopologyNetwork> topologyNetworks = new ArrayList<>();
+    private ArrayList<ContainerNetwork> prepareNetwork(Router router) {
+        ArrayList<ContainerNetwork> topologyNetworks = new ArrayList<>();
         NextHop nextHop = new NextHop(router, 1);
         CalcRoute calcRoute = new CalcRoute(nextHop, 1);
 
@@ -172,7 +172,7 @@ public class BuilderTests {
         calcRoutes.add(1, calcRoute);
         calcRoutes.add(0, new CalcRoute(new NextHop(null, 0), null));
 
-        TopologyNetwork tpN1 = new TopologyNetwork();
+        ContainerNetwork tpN1 = new ContainerNetwork();
         tpN1.setCreator("Docker");
         tpN1.setMask(24);
         tpN1.setIPAddress("192.168.1.0");
@@ -181,7 +181,7 @@ public class BuilderTests {
         tpN1.setCalcRoutes(calcRoutes);
         topologyNetworks.add(tpN1);
 
-        TopologyNetwork tpN2 = new TopologyNetwork();
+        ContainerNetwork tpN2 = new ContainerNetwork();
         tpN2.setCreator("Docker");
         tpN2.setMask(24);
         tpN2.setIPAddress("192.168.2.0");

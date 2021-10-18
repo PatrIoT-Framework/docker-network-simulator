@@ -17,7 +17,7 @@
 package io.patriot_framework.network_simulator.docker.builder;
 
 import io.patriot_framework.network_simulator.docker.CalculatedRouteList;
-import io.patriot_framework.network_simulator.docker.model.network.TopologyNetwork;
+import io.patriot_framework.network_simulator.docker.model.network.ContainerNetwork;
 import io.patriot_framework.network_simulator.docker.model.routes.CalcRoute;
 
 /**
@@ -141,8 +141,8 @@ public class NetworkBuilder {
      *
      * @return the network
      */
-    public TopologyNetwork build() {
-        TopologyNetwork n = new TopologyNetwork();
+    public ContainerNetwork build() {
+        ContainerNetwork n = new ContainerNetwork();
         n.setCalcRoutes(calcRoutes);
         n.setInternet(internet);
         n.setIPAddress(ipAddress);
